@@ -24,8 +24,7 @@ import com.cps.lambda.apis.model.Candidate;
 public class CandidateProfileLambda implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     private static final AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
     //Local Set Up
-    //static final BasicAWSCredentials credentials = new BasicAWSCredentials("AKIATT3J4I6PFJCASMFA", "qUNVfrF+vXerR0fX7zR05yqGyX13k6tuOU8fEvFY");
-   /* private static final AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+    /* private static final AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
             .withCredentials(new AWSStaticCredentialsProvider(credentials))
            .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://dynamo-local:8000", "us-east-1"))
            .build();*/
