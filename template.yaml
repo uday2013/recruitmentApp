@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+ recruitmentapi
+
+  Sample SAM Template for recruitmentapi
+Globals:
+  Function:
+    Runtime: java8
+    MemorySize: 512
+    Timeout: 50
+
+Resources:
+  CandidateFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: com.cps.lambda.apis.CandidateProfileLambda::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref RecruitmentTable
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: !GetAtt RecruitmentTable.Arn
+      Events:
+        RecruitmentEvents:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+  RecruitmentTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: recruitmentDB
+      AttributeDefinitions:
+        - AttributeName: candidateId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: candidateId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+Outputs:
+  RecruitmentApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Stage/"
+  DynamoDBTableName:
+    Value: !Ref RecruitmentTable
+    Description: DynamoDB Table Name
